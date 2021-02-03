@@ -22,6 +22,30 @@
       "revId": "10f0ec92cc2636b883db807a58448617cc09d259",
       "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77141bb6_02ada955",
+        "filename": "so-etsi-nfvo-ns-lcm/so-etsi-nfvo-ns-lcm-database-service/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3237
+      },
+      "writtenOn": "2021-02-03T16:09:41Z",
+      "side": 1,
+      "message": "this is our project version",
+      "parentUuid": "28a4c7db_40db0d05",
+      "range": {
+        "startLine": 7,
+        "startChar": 17,
+        "endLine": 7,
+        "endChar": 31
+      },
+      "revId": "10f0ec92cc2636b883db807a58448617cc09d259",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
     }
   ]
 }
