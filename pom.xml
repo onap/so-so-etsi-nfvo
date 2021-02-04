@@ -30,7 +30,8 @@
         <snakeyaml-version>0.11</snakeyaml-version>
         <hamcrest-version>2.2</hamcrest-version>
         <equalsverifier-version>3.4.1</equalsverifier-version>
-        <so-core-version>1.7.0-SNAPSHOT</so-core-version>
+        <so-core-version>1.7.1-SNAPSHOT</so-core-version>
+        <so-etsi-sol003-adapter-version>1.7.1-SNAPSHOT</so-etsi-sol003-adapter-version>
     </properties>
 
     <build>
