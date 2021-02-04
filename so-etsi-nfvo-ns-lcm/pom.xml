@@ -6,7 +6,7 @@
         <artifactId>so-etsi-nfvo</artifactId>
         <version>1.7.1-SNAPSHOT</version>
     </parent>
-    <groupId>org.onap.so.so-etsi-nfvo.lcm</groupId>
+    <groupId>org.onap.so.so-etsi-nfvo.ns.lcm</groupId>
     <artifactId>so-etsi-nfvo-ns-lcm</artifactId>
     <packaging>pom</packaging>
     <name>SO ETSI NFVO NS LCM Manager</name>
