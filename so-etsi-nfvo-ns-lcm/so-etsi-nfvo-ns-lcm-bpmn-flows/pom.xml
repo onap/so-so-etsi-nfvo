@@ -33,12 +33,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.onap.so.etsi.nfvo</groupId>
+            <groupId>org.onap.so.so-etsi-nfvo.ns.lcm</groupId>
             <artifactId>so-etsi-nfvo-ns-lcm-api</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.onap.so.etsi.nfvo</groupId>
+            <groupId>org.onap.so.so-etsi-nfvo.ns.lcm</groupId>
             <artifactId>so-etsi-nfvo-ns-lcm-database-service</artifactId>
             <version>${project.version}</version>
         </dependency>
