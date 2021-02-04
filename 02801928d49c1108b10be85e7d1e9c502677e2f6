@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38465ed8_ec03cb1a",
+        "filename": "so-etsi-nfvo-ns-lcm/so-etsi-nfvo-ns-lcm-service/pom.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 2085
+      },
+      "writtenOn": "2021-02-04T13:59:48Z",
+      "side": 1,
+      "message": "Is this correct?",
+      "range": {
+        "startLine": 14,
+        "startChar": 21,
+        "endLine": 14,
+        "endChar": 43
+      },
+      "revId": "02801928d49c1108b10be85e7d1e9c502677e2f6",
+      "serverId": "14b4e41f-c4e3-4fb9-9955-6a9b5656895a",
+      "unresolved": true
+    }
+  ]
+}
