@@ -1,0 +1,118 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.onap.so.so-etsi-nfvo</groupId>
+        <artifactId>packages</artifactId>
+        <version>1.7.1-SNAPSHOT</version>
+    </parent>
+    <groupId>org.onap.so.so-etsi-nfvo.packages</groupId>
+    <artifactId>docker</artifactId>
+    <packaging>pom</packaging>
+    <name>SO ETSI NFVO Docker Packaging</name>
+
+    <properties>
+        <docker.skip>false</docker.skip>
+        <docker.skip.build>false</docker.skip.build>
+        <docker.skip.push>false</docker.skip.push>
+        <docker.image.prefix>onap/so</docker.image.prefix>
+        <docker.push.phase>deploy</docker.push.phase>
+    </properties>
+    <build>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <configuration combine.self="override">
+                    <verbose>true</verbose>
+                    <apiVersion>1.23</apiVersion>
+                    <pullRegistry>${docker.pull.registry}</pullRegistry>
+                    <pushRegistry>${docker.push.registry}</pushRegistry>
+                    <images>
+                        <image>
+                            <name>${docker.image.prefix}/base-image:1.0</name>
+                            <build>
+                                <cleanup>try</cleanup>
+                                <dockerFile>docker-files/Dockerfile.so-base-image</dockerFile>
+                            </build>
+                        </image>
+                        <image>
+                            <name>${docker.image.prefix}/so-etsi-nfvo-ns-lcm</name>
+                            <build>
+                                <cleanup>try</cleanup>
+                                <dockerFile>docker-files/Dockerfile.so-app</dockerFile>
+                                <tags>
+                                    <tag>${project.version}</tag>
+                                    <tag>${project.version}-${maven.build.timestamp}</tag>
+                                </tags>
+                                <assembly>
+                                    <inline>
+                                        <dependencySets>
+                                            <dependencySet>
+                                                <includes>
+                                                    <include>org.onap.so.so-etsi-nfvo.ns.lcm:so-etsi-nfvo-ns-lcm-application</include>
+                                                </includes>
+                                                <outputFileNameMapping>app.jar</outputFileNameMapping>
+                                            </dependencySet>
+                                        </dependencySets>
+                                    </inline>
+                                </assembly>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>clean-images</id>
+                        <phase>pre-clean</phase>
+                        <goals>
+                            <goal>remove</goal>
+                        </goals>
+                        <configuration>
+                            <removeAll>true</removeAll>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-images</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+
+                    <execution>
+                        <id>push-images</id>
+                        <phase>${docker.push.phase}</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <image>${docker.image.prefix}/so-etsi-nfvo-ns-lcm</image>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.onap.so.so-etsi-nfvo.ns.lcm</groupId>
+            <artifactId>so-etsi-nfvo-ns-lcm-application</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>

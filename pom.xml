@@ -49,5 +49,6 @@
 
     <modules>
         <module>so-etsi-nfvo-ns-lcm</module>
+        <module>packages</module>
     </modules>
 </project>
