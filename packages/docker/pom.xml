@@ -12,6 +12,7 @@
     <name>SO ETSI NFVO Docker Packaging</name>
 
     <properties>
+        <etsi-nfvo-project-version>${project.version}</etsi-nfvo-project-version>
         <docker.skip>false</docker.skip>
         <docker.skip.build>false</docker.skip.build>
         <docker.skip.push>false</docker.skip.push>
@@ -33,13 +34,13 @@
                         </goals>
                         <configuration>
                             <source>
-                                println 'Project version: ' + project.properties['so.project.version'];
+                                println 'Project version: ' + project.properties['etsi-nfvo-project-version'];
                                 def versionArray;
-                                if ( project.properties['so.project.version'] != null ) {
-                                    versionArray = project.properties['so.project.version'].split('-');
+                                if ( project.properties['etsi-nfvo-project-version'] != null ) {
+                                    versionArray = project.properties['etsi-nfvo-project-version'].split('-');
                                 }
 
-                                if ( project.properties['so.project.version'].endsWith("-SNAPSHOT") ) {
+                                if ( project.properties['etsi-nfvo-project-version'].endsWith("-SNAPSHOT") ) {
                                     project.properties['project.docker.latesttag.version']=versionArray[0] + "-SNAPSHOT-latest";
                                 } else {
                                     project.properties['project.docker.latesttag.version']=versionArray[0] + "-STAGING-latest";
