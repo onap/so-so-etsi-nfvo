@@ -77,8 +77,8 @@ read_properties(){
                export "$eKey"="$value"
         esac
     done <<-EOF
-    $1
-    EOF
+	$1
+	EOF
 }
 
 if [ -n "${AAF_SSL_CERTS_ENABLED}" ]; then
