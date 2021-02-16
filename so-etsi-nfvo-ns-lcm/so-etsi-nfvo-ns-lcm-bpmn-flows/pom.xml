@@ -43,13 +43,13 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.onap.so.adapters</groupId>
-            <artifactId>etsi-sol003-pkgm-ext-clients</artifactId>
+            <groupId>org.onap.so.adapters.so-etsi-sol003-adapter.pkgm</groupId>
+            <artifactId>so-etsi-sol003-adapter-pkgm-ext-clients</artifactId>
             <version>${so-etsi-sol003-adapter-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.onap.so.adapters</groupId>
-            <artifactId>etsi-sol003-lcm-api</artifactId>
+            <groupId>org.onap.so.adapters.so-etsi-sol003-adapter.lcm</groupId>
+            <artifactId>so-etsi-sol003-adapter-lcm-api</artifactId>
             <version>${so-etsi-sol003-adapter-version}</version>
         </dependency>
         <dependency>
@@ -107,6 +107,11 @@
             <artifactId>equalsverifier</artifactId>
             <version>${equalsverifier-version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-contract-wiremock</artifactId>
+            <version>${springframework-wiremock-version}</version>
         </dependency>
     </dependencies>
 </project>
