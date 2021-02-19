@@ -58,6 +58,10 @@
             <version>${so-core-version}</version>
         </dependency>
         <dependency>
+            <groupId>org.onap.aai.schema-service</groupId>
+            <artifactId>aai-schema</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
             <version>${camunda.springboot.version}</version>
@@ -99,7 +103,6 @@
         <dependency>
             <groupId>org.hamcrest</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>${hamcrest-version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -112,6 +115,16 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-wiremock</artifactId>
             <version>${springframework-wiremock-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.so</groupId>
+            <artifactId>common</artifactId>
+            <version>${so-core-version}</version>
         </dependency>
     </dependencies>
 </project>
