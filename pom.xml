@@ -32,7 +32,7 @@
         <equalsverifier-version>3.4.1</equalsverifier-version>
         <springframework-wiremock-version>1.2.4.RELEASE</springframework-wiremock-version>
         <so-core-version>1.8.0-SNAPSHOT</so-core-version>
-        <so-etsi-sol003-adapter-version>1.7.1-SNAPSHOT</so-etsi-sol003-adapter-version>
+        <so-etsi-sol003-adapter-version>1.8.1</so-etsi-sol003-adapter-version>
     </properties>
 
     <build>
