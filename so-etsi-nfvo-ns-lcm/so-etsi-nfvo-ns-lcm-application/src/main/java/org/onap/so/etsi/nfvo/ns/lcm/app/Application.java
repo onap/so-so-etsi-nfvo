@@ -44,7 +44,7 @@ public class Application {
      */
     public static void main(final String[] args) {
         new SpringApplication(Application.class).run(args);
-        logger.info("SO ETSI NFVO NS LCM Application started!");
+        logger.info("SO ETSI NFVO NS LCM Application started successfully!");
 
     }
 
