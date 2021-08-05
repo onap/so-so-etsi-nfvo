@@ -20,11 +20,12 @@
 package org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows;
 
 import java.time.LocalDateTime;
-import org.onap.so.etsi.nfvo.ns.lcm.JSON;
 import org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.utils.LocalDateTimeTypeAdapter;
+import org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.utils.OffsetDateTimeTypeAdapter;
 import org.springframework.stereotype.Component;
 import org.threeten.bp.OffsetDateTime;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * @author Waqas Ikram (waqas.ikram@est.tech)
@@ -33,10 +34,10 @@ import com.google.gson.Gson;
 @Component
 public class GsonProvider {
 
-    private final JSON.OffsetDateTimeTypeAdapter offsetDateTimeTypeAdapter = new JSON.OffsetDateTimeTypeAdapter();
+    private final OffsetDateTimeTypeAdapter offsetDateTimeTypeAdapter = new OffsetDateTimeTypeAdapter();
 
     public Gson getGson() {
-        return JSON.createGson().registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter)
+        return new GsonBuilder().registerTypeAdapter(OffsetDateTime.class, offsetDateTimeTypeAdapter)
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter()).create();
     }
 
