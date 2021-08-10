@@ -24,7 +24,7 @@
         <hamcrest-version>2.2</hamcrest-version>
         <equalsverifier-version>3.4.1</equalsverifier-version>
         <so-core-version>1.8.0-SNAPSHOT</so-core-version>
-        <so-etsi-sol003-adapter-version>1.8.1-SNAPSHOT</so-etsi-sol003-adapter-version>
+        <so-etsi-sol003-adapter-version>1.9.0-SNAPSHOT</so-etsi-sol003-adapter-version>
     </properties>
 
     <build>
