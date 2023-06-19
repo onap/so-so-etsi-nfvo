@@ -44,6 +44,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -162,7 +163,7 @@ public class JobExecutorService {
         logger.info("New job created in database :\n{}", newJob);
 
         final LocalDateTime currentDateTime = LocalDateTime.now();
-        final NsLcmOpOcc newNsLcmOpOcc = new NsLcmOpOcc().id(nsInstanceId).operation(NsLcmOpType.INSTANTIATE)
+        final NsLcmOpOcc newNsLcmOpOcc = new NsLcmOpOcc().id(UUID.randomUUID().toString()).operation(NsLcmOpType.INSTANTIATE)
                 .operationState(OperationStateEnum.PROCESSING).stateEnteredTime(currentDateTime)
                 .startTime(currentDateTime).nfvoNsInst(getNfvoNsInst(nsInstanceId)).isAutoInvocation(false)
                 .isCancelPending(false).operationParams(gson.toJson(instantiateNsRequest));
@@ -207,7 +208,7 @@ public class JobExecutorService {
         logger.info("New job created in database :\n{}", nfvoJob);
 
         final LocalDateTime currentDateTime = LocalDateTime.now();
-        final NsLcmOpOcc nsLcmOpOcc = new NsLcmOpOcc().id(nsInstanceId).operation(NsLcmOpType.TERMINATE)
+        final NsLcmOpOcc nsLcmOpOcc = new NsLcmOpOcc().id(UUID.randomUUID().toString()).operation(NsLcmOpType.TERMINATE)
                 .operationState(OperationStateEnum.PROCESSING).stateEnteredTime(currentDateTime)
                 .startTime(currentDateTime).nfvoNsInst(getNfvoNsInst(nsInstanceId)).isAutoInvocation(false)
                 .isCancelPending(false).operationParams(gson.toJson(terminateNsRequest));
