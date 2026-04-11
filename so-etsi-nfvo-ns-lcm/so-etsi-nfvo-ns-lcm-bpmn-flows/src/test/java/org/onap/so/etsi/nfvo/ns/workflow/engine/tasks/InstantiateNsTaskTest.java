@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  *  Copyright (C) 2020 Nordix Foundation.
+ *  Copyright (C) 2026 Deutsche Telekom AG.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +29,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.onap.aaiclient.client.aai.AAIVersion.V19;
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.CamundaVariableNameConstants.NETWORK_SERVICE_DESCRIPTOR_PARAM_NAME;
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.extclients.etsicatalog.EtsiCatalogServiceProviderConfiguration.ETSI_CATALOG_REST_TEMPLATE_BEAN;
@@ -77,7 +79,9 @@ import org.onap.so.etsi.nfvo.ns.lcm.model.NsInstancesnsInstanceIdinstantiateAddi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.onap.so.etsi.nfvo.ns.lcm.database.beans.JobStatusEnum;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -289,6 +293,96 @@ public class InstantiateNsTaskTest extends BaseTest {
 
     private String getAbsolutePath(final String path) {
         return new File(path).getAbsolutePath();
+    }
+
+    @Test
+    public void testInstantiateNsWorkflow_FailsToGetNsdContent_setsJobToErrorAndOpOccToFailed()
+            throws InterruptedException {
+        final String nsdId = UUID.randomUUID().toString();
+        final String nsdName = NS_NAME + "-" + System.currentTimeMillis();
+
+        final NfvoNsInst newNfvoNsInst = new NfvoNsInst().nsInstId(nsdId).name(nsdName)
+                .nsPackageId(nsdId).nsdId(nsdId).nsdInvariantId(nsdId)
+                .status(State.NOT_INSTANTIATED).statusUpdatedTime(LocalDateTime.now());
+        databaseServiceProvider.saveNfvoNsInst(newNfvoNsInst);
+
+        mockEtsiCatalogRestServiceServer
+                .expect(requestTo(ETSI_CATALOG_URL + "/nsd/v1/ns_descriptors/" + nsdId + "/nsd_content"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        // runInstantiateNsJob returns as soon as the job reaches IN_PROGRESS (async pattern);
+        // the NSD content error occurs in a background BPMN thread after the method returns.
+        final String nsLcmOpOccId =
+                objUnderTest.runInstantiateNsJob(newNfvoNsInst.getNsInstId(), getInstantiateNsRequest());
+        assertNotNull(nsLcmOpOccId);
+
+        final Optional<NfvoJob> optional = getJobByResourceId(newNfvoNsInst.getNsInstId());
+        assertTrue(optional.isPresent());
+        final NfvoJob nfvoJob = optional.get();
+
+        assertTrue(waitForProcessInstanceToFinish(nfvoJob.getProcessInstanceId()));
+
+        final HistoricProcessInstance historicProcessInstance =
+                getHistoricProcessInstance(nfvoJob.getProcessInstanceId());
+        assertNotNull(historicProcessInstance);
+        assertEquals(HistoricProcessInstance.STATE_COMPLETED, historicProcessInstance.getState());
+
+        final Optional<NfvoJob> finalJobOptional =
+                databaseServiceProvider.getJob(nfvoJob.getJobId());
+        assertTrue(finalJobOptional.isPresent());
+        assertEquals(JobStatusEnum.ERROR, finalJobOptional.get().getStatus());
+
+        final Optional<NsLcmOpOcc> optionalNsLcmOpOcc = databaseServiceProvider.getNsLcmOpOcc(nsLcmOpOccId);
+        assertTrue(optionalNsLcmOpOcc.isPresent());
+        assertEquals(OperationStateEnum.FAILED, optionalNsLcmOpOcc.get().getOperationState());
+    }
+
+    @Test
+    public void testInstantiateNsWorkflow_FailsToGetNsdPackageModel_setsJobToErrorAndOpOccToFailed()
+            throws InterruptedException, IOException {
+        final String nsdId = UUID.randomUUID().toString();
+        final String nsdName = NS_NAME + "-" + System.currentTimeMillis();
+
+        final NfvoNsInst newNfvoNsInst = new NfvoNsInst().nsInstId(nsdId).name(nsdName)
+                .nsPackageId(nsdId).nsdId(nsdId).nsdInvariantId(nsdId)
+                .status(State.NOT_INSTANTIATED).statusUpdatedTime(LocalDateTime.now());
+        databaseServiceProvider.saveNfvoNsInst(newNfvoNsInst);
+
+        // NSD content succeeds so getAndParseNsdFromEtsiCatalog passes
+        mockEtsiCatalogRestServiceServer
+                .expect(requestTo(ETSI_CATALOG_URL + "/nsd/v1/ns_descriptors/" + nsdId + "/nsd_content"))
+                .andExpect(method(HttpMethod.GET)).andRespond(withSuccess(
+                        getFileContent(getAbsolutePath(SAMPLE_NSD_FILE)), MediaType.APPLICATION_OCTET_STREAM));
+        // NSD package model (info) returns 404 so getVnfPkgIdForEachVnfdId fails
+        mockEtsiCatalogRestServiceServer
+                .expect(requestTo(ETSI_CATALOG_URL + "/nsd/v1/ns_descriptors/" + nsdId))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND));
+
+        final String nsLcmOpOccId =
+                objUnderTest.runInstantiateNsJob(newNfvoNsInst.getNsInstId(), getInstantiateNsRequest());
+        assertNotNull(nsLcmOpOccId);
+
+        final Optional<NfvoJob> optional = getJobByResourceId(newNfvoNsInst.getNsInstId());
+        assertTrue(optional.isPresent());
+        final NfvoJob nfvoJob = optional.get();
+
+        assertTrue(waitForProcessInstanceToFinish(nfvoJob.getProcessInstanceId()));
+
+        final HistoricProcessInstance historicProcessInstance =
+                getHistoricProcessInstance(nfvoJob.getProcessInstanceId());
+        assertNotNull(historicProcessInstance);
+        assertEquals(HistoricProcessInstance.STATE_COMPLETED, historicProcessInstance.getState());
+
+        final Optional<NfvoJob> finalJobOptional =
+                databaseServiceProvider.getJob(nfvoJob.getJobId());
+        assertTrue(finalJobOptional.isPresent());
+        assertEquals(JobStatusEnum.ERROR, finalJobOptional.get().getStatus());
+
+        final Optional<NsLcmOpOcc> optionalNsLcmOpOcc = databaseServiceProvider.getNsLcmOpOcc(nsLcmOpOccId);
+        assertTrue(optionalNsLcmOpOcc.isPresent());
+        assertEquals(OperationStateEnum.FAILED, optionalNsLcmOpOcc.get().getOperationState());
     }
 
     private void mockAAIEndpoints(final String nsdId) throws JsonProcessingException {
