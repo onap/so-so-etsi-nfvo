@@ -1,6 +1,7 @@
 /*-
  * ============LICENSE_START=======================================================
  *  Copyright (C) 2020 Nordix Foundation.
+ *  Copyright (C) 2025 Deutsche Telekom AG.
  * ================================================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +20,7 @@
  */
 package org.onap.so.etsi.nfvo.ns.lcm.database.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.onap.so.etsi.nfvo.ns.lcm.database.beans.NsLcmOpOcc;
 import org.onap.so.etsi.nfvo.ns.lcm.database.beans.OperationStateEnum;
@@ -34,6 +36,8 @@ import org.springframework.data.repository.query.Param;
 public interface NSLcmOpOccRepository extends JpaRepository<NsLcmOpOcc, String> {
 
     Optional<NsLcmOpOcc> findById(final String id);
+
+    List<NsLcmOpOcc> findByNfvoNsInstNsInstId(String nsInstId);
 
     @Modifying(clearAutomatically = true)
     @Query("UPDATE NsLcmOpOcc SET operationState = (:operationState) WHERE id = (:id)")
