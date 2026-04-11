@@ -32,13 +32,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>nl.jqno.equalsverifier</groupId>
             <artifactId>equalsverifier</artifactId>
             <version>${equalsverifier-version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.onap.so</groupId>
+            <groupId>org.onap.so.common</groupId>
             <artifactId>common</artifactId>
             <version>${so-core-version}</version>
             <scope>test</scope>

@@ -22,6 +22,7 @@ package org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.extclients.aai;
 import java.util.Optional;
 import org.onap.aai.domain.yang.GenericVnf;
 import org.onap.aai.domain.yang.ServiceInstance;
+import org.onap.aaiclient.client.aai.entities.uri.AAIClientUriFactory;
 import org.onap.aaiclient.client.aai.entities.uri.AAIResourceUri;
 import org.onap.aaiclient.client.aai.entities.uri.AAIUriFactory;
 import org.onap.aaiclient.client.generated.fluentbuilders.AAIFluentTypeBuilder;
@@ -62,7 +63,7 @@ public class AaiServiceProviderImpl implements AaiServiceProvider {
         final AAIResourceUri genericVnfURI =
                 AAIUriFactory.createResourceUri(AAIFluentTypeBuilder.network().genericVnf(vnfId));
         final AAIResourceUri serviceInstanceURI =
-                AAIUriFactory.createResourceUri(Types.SERVICE_INSTANCE.getFragment(serviceInstanceId));
+                AAIClientUriFactory.createResourceUri(Types.SERVICE_INSTANCE.getFragment(serviceInstanceId));
         aaiClientProvider.getAaiClient().createIfNotExists(genericVnfURI, Optional.of(genericVnf))
                 .connect(genericVnfURI, serviceInstanceURI);
 

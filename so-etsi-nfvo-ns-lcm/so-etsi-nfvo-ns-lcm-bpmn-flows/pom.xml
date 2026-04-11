@@ -120,7 +120,12 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.onap.so</groupId>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.so.common</groupId>
             <artifactId>common</artifactId>
             <version>${so-core-version}</version>
             <exclusions>
@@ -133,6 +138,11 @@
                     <artifactId>tomcat-catalina</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.so</groupId>
+            <artifactId>clients-base</artifactId>
+            <version>${so-core-version}</version>
         </dependency>
     </dependencies>
 </project>
