@@ -1,0 +1,17 @@
+spring:
+   main:
+      web-application-type: none
+   datasource:
+      hikari:
+         nfvo:
+            jdbcUrl: jdbc:mariadb://${DB_HOST}:${DB_PORT}/nfvo
+            username: ${DB_USERNAME}
+            password: ${DB_PASSWORD}
+            driver-class-name: org.mariadb.jdbc.Driver
+            pool-name: ns-lcm-nfvo-pool
+            registerMbeans: true
+   flyway:
+      locations: classpath:db/migration
+   jpa:
+      hibernate:
+         ddl-auto: validate
