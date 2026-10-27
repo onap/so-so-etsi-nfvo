@@ -1,0 +1,9 @@
+---
+distribution_type: 'container'
+container_release_tag: '1.13.0'
+project: 'so'
+log_dir: 'so-so-etsi-nfvo-maven-docker-stage-master/798/'
+ref: '9744be5e9bb85bf020b39a5aac7bf551a6d1919f'
+containers:
+    - name: 'so/so-etsi-nfvo-ns-lcm'
+      version: '1.13.0-20261027T0821'
