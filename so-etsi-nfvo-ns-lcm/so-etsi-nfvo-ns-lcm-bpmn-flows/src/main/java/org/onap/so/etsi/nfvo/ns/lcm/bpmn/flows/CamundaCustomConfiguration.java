@@ -22,6 +22,10 @@ package org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows;
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.Constants.NS_WORKFLOW_ENGINE;
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.Constants.TENANT_ID;
 import static org.slf4j.LoggerFactory.getLogger;
+import java.sql.Connection;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+import org.camunda.bpm.engine.impl.db.sql.DbSqlSessionFactory;
 import org.camunda.bpm.engine.spring.SpringProcessEngineConfiguration;
 import org.camunda.bpm.spring.boot.starter.configuration.Ordering;
 import org.camunda.bpm.spring.boot.starter.configuration.impl.AbstractCamundaConfiguration;
@@ -44,7 +48,26 @@ public class CamundaCustomConfiguration extends AbstractCamundaConfiguration {
         processEngineConfiguration.setDeploymentTenantId(TENANT_ID);
         processEngineConfiguration.setDeploymentName(NS_WORKFLOW_ENGINE);
         processEngineConfiguration.setEnforceHistoryTimeToLive(false);
+        // MariaDB defaults to REPEATABLE_READ, which Camunda's startup check rejects
+        processEngineConfiguration.setSkipIsolationLevelCheck(true);
+        if (processEngineConfiguration.getDatabaseType() == null
+                && isMariaDb(processEngineConfiguration.getDataSource())) {
+            // Camunda only knows the "MySQL" product name and runs MariaDB as mysql
+            processEngineConfiguration.setDatabaseType(DbSqlSessionFactory.MYSQL);
+        }
         super.preInit(processEngineConfiguration);
+    }
+
+    private static boolean isMariaDb(final DataSource dataSource) {
+        if (dataSource == null) {
+            return false;
+        }
+        try (final Connection connection = dataSource.getConnection()) {
+            return "MariaDB".equals(connection.getMetaData().getDatabaseProductName());
+        } catch (final SQLException exception) {
+            logger.warn("Unable to read database product name", exception);
+            return false;
+        }
     }
 
 }
