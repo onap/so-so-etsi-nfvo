@@ -37,6 +37,7 @@ import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.CamundaVariableNameConstan
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.extclients.etsicatalog.EtsiCatalogServiceProviderConfiguration.ETSI_CATALOG_REST_TEMPLATE_BEAN;
 import static org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.extclients.vnfm.Sol003AdapterConfiguration.SOL003_ADAPTER_REST_TEMPLATE_BEAN;
 import static org.springframework.test.web.client.ExpectedCount.times;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -82,6 +83,7 @@ import org.onap.so.etsi.nfvo.ns.lcm.model.InstantiateNsRequest;
 import org.onap.so.etsi.nfvo.ns.lcm.model.NsInstancesnsInstanceIdinstantiateAdditionalParamsForVnf;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -237,6 +239,7 @@ public class InstantiateNsTaskTest extends BaseTest {
                 .expect(times(VNFD_ID_TO_VNFPKG_ID_MAPPING.size()),
                         requestTo(MatchesPattern.matchesPattern(SOL003_ADAPTER_ENDPOINT_URL + "/vnfs/.*")))
                 .andExpect(method(HttpMethod.POST))
+                .andExpect(header(HttpHeaders.AUTHORIZATION, "Basic c28tZXRzaS1uZnZvLW5zLWxjbTpwYXNzd29yZDEk"))
                 .andRespond(withSuccess(gson.toJson(new CreateVnfResponse().jobId(UUID.randomUUID().toString())),
                         MediaType.APPLICATION_JSON));
 

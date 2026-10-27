@@ -37,6 +37,10 @@ hibernate:
 aai:
    version: v19
    endpoint: http://localhost:${wiremock.server.port}
+so:
+   auth:
+      username: so-etsi-nfvo-ns-lcm
+      password: password1$
 etsi-catalog-manager:
    base:
       endpoint: http://modeling-etsicatalog.onap:8806/api

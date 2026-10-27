@@ -41,6 +41,7 @@ import org.onap.so.etsi.nfvo.ns.lcm.bpmn.flows.GsonProvider;
 import org.onap.so.logging.jaxrs.filter.SOSpringClientFilter;
 import org.onap.so.rest.service.HttpRestServiceProvider;
 import org.onap.so.rest.service.HttpRestServiceProviderImpl;
+import org.onap.so.utils.BasicAuth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,8 +76,11 @@ public class Sol003AdapterConfiguration {
     @Value("${rest.http.client.configuration.ssl.trustStorePassword:#{null}}")
     private String trustStorePassword;
 
-    @Value("${so.adapters.sol003-adapter.auth:Basic dm5mbTpwYXNzd29yZDEk}")
-    private String sol003AdapterBasicAuth;
+    @Value("${so.auth.username:#{null}}")
+    private String username;
+
+    @Value("${so.auth.password:#{null}}")
+    private String password;
 
     @Autowired
     private GsonProvider gsonProvider;
@@ -106,7 +110,7 @@ public class Sol003AdapterConfiguration {
             setTrustStore(restTemplate);
         }
         setGsonMessageConverter(restTemplate);
-        return getHttpRestServiceProvider(restTemplate, new BasicHttpHeadersProvider(sol003AdapterBasicAuth));
+        return getHttpRestServiceProvider(restTemplate, new BasicHttpHeadersProvider(BasicAuth.header(username, password)));
     }
 
     private void setTrustStore(final RestTemplate restTemplate) {
