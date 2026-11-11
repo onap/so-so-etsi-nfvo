@@ -21,7 +21,6 @@
         <version-swagger-codegen>2.3.1</version-swagger-codegen>
         <swagger-core-version>1.5.15</swagger-core-version>
         <jaxb-api>2.3.0</jaxb-api>
-        <snakeyaml-version>0.11</snakeyaml-version>
         <hamcrest-version>2.2</hamcrest-version>
         <equalsverifier-version>3.15.6</equalsverifier-version>
         <so-core-version>1.23.0-SNAPSHOT</so-core-version>
@@ -36,6 +35,11 @@
                 <groupId>com.h2database</groupId>
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>9.9.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
