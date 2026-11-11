@@ -75,12 +75,6 @@
         <dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-rest</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.camunda.bpmn</groupId>
-                    <artifactId>camunda-engine-rest-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.yaml</groupId>
@@ -146,6 +140,56 @@
             <groupId>org.onap.so</groupId>
             <artifactId>clients-base</artifactId>
             <version>${so-core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.so</groupId>
+            <artifactId>aai-fluent-uri-builder</artifactId>
+            <version>${so-core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onap.so</groupId>
+            <artifactId>utils</artifactId>
+            <version>${so-core-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm</groupId>
+            <artifactId>camunda-engine-spring-6</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.camunda.bpm.springboot</groupId>
+            <artifactId>camunda-bpm-spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents.core5</groupId>
+            <artifactId>httpcore5</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
         </dependency>
     </dependencies>
 </project>
